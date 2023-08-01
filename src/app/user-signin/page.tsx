@@ -20,7 +20,7 @@ import EyeOff from '@/assets/icons/eye-off.svg'
 import EyeOn from '@/assets/icons/eye-on.svg'
 import { LoginValidator } from '@/lib/validators/login'
 
-const UserRegisterPage: FC = () => {
+const UserLoginPage: FC = () => {
   const [show, setShow] = useState<boolean>(false)
   const form = useForm<z.infer<typeof LoginValidator>>({
     resolver: zodResolver(LoginValidator),
@@ -125,4 +125,4 @@ const UserRegisterPage: FC = () => {
   )
 }
 
-export default UserRegisterPage
+export default UserLoginPage
