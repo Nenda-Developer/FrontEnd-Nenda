@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-primary text-primary-foreground',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         nendaPrimary:
-          'px-5 py-10 text-white rounded-full bg-nenda-orange hover:bg-opacity-50'
+          'px-5 py-52 mt-8 text-white rounded-full bg-nenda-orange hover:bg-opacity-50 '
       },
       size: {
         default: 'h-10 px-4 py-2',
