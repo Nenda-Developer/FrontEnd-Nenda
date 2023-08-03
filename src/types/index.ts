@@ -7,11 +7,12 @@ export interface IOption {
   registerDestination: string
 }
 
-export interface IAuthCategories {
-  authOptions: string
-}
-
 export type AuthContextType = {
   handleAsAuth: (as: string) => void
   asAuth: string
+}
+
+export interface IMountain {
+  id: number
+  mountainName: string
 }

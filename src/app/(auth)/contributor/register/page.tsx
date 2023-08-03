@@ -21,10 +21,15 @@ import {
   ContributorRegisterValidator
 } from '@/lib/validators/register'
 import { ArrowNext, Search } from '@/lib/utils/icon'
+import { MOUNTAIN } from '@/constants'
 
 const ContributorRegisterPage: FC = () => {
   const [page, setPage] = useState<number>(0)
   const [formData, setFormData] = useState<any>({})
+  const [query, setQuery] = useState<string>('')
+  const [select, setSelect] = useState<string[]>([])
+  const [isFocus, setIsFocus] = useState<boolean>(false)
+
   const formStepOne = useForm<z.infer<typeof ContributorRegisterValidator>>({
     resolver: zodResolver(ContributorRegisterValidator),
     defaultValues: {
@@ -52,6 +57,20 @@ const ContributorRegisterPage: FC = () => {
   const onSubmit = (data: any) => {
     setPage(page + 1)
     setFormData({ ...formData, ...data })
+  }
+
+  const handleInputFocus = () => {
+    setIsFocus(true)
+  }
+
+  const handleSelect = (mountainName: string) => {
+    const isAlreadySelected = select.includes(mountainName)
+
+    if (!isAlreadySelected) {
+      setSelect(prevSelect => [...prevSelect, mountainName])
+    }
+    setQuery('')
+    setIsFocus(false)
   }
 
   return (
@@ -219,19 +238,55 @@ const ContributorRegisterPage: FC = () => {
                       <FormLabel className="text-base font-medium text-white">
                         Gunung Yang Pernah Didaki :
                       </FormLabel>
-                      <div className="relative">
-                        <FormControl>
-                          <Input
-                            placeholder="cth : Gunung Sindoro"
-                            {...field}
-                            className="rounded-[5px] py-6 bg-nenda-dark-blue text-white placeholder:text-[#203D53] focus:outline-nenda-orange"
+                      <div>
+                        <div className="relative">
+                          <FormControl>
+                            <input
+                              placeholder="cth : Gunung Sindoro"
+                              value={query}
+                              onChange={e =>
+                                setQuery(e.target.value.toLowerCase())
+                              }
+                              onFocus={handleInputFocus}
+                              className="rounded-[5px] px-5 py-3 bg-nenda-dark-blue text-white placeholder:text-[#203D53] focus:outline-nenda-orange w-full"
+                            />
+                          </FormControl>
+                          <Image
+                            src={Search}
+                            alt="search"
+                            className="absolute cursor-pointer right-5 top-[30%]"
                           />
-                        </FormControl>
-                        <Image
-                          src={Search}
-                          alt="search"
-                          className="absolute cursor-pointer right-5 top-[30%]"
-                        />
+                        </div>
+                        {isFocus && query.split('').length > 0 && (
+                          <div className="bg-white" onFocus={handleInputFocus}>
+                            {MOUNTAIN.filter(mount =>
+                              mount.mountainName.toLowerCase().includes(query)
+                            ).map(m => (
+                              <div
+                                className={`cursor-pointer hover:bg-red-300 ${
+                                  select.includes(m.mountainName)
+                                    ? 'opacity-50 pointer-events-none'
+                                    : ''
+                                }`}
+                                key={m.id}
+                                onClick={() => handleSelect(m.mountainName)}
+                              >
+                                {m.mountainName}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {select.length > 0 && (
+                          <div className="grid grid-cols-3 gap-3 mt-5">
+                            {select.map((item, i) => (
+                              <div key={i}>
+                                <p className="px-5 py-3 text-xs rounded-full text-nenda-orange bg-nenda-dark-blue">
+                                  {item}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       <FormMessage className="text-red-600" />
                     </FormItem>

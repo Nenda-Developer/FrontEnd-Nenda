@@ -1,7 +1,7 @@
 import HikerUser from '@/assets/icons/user.svg'
 import ContributorUser from '@/assets/icons/contributor.svg'
 import VendorUser from '@/assets/icons/vendor.svg'
-import { IOption } from '@/types'
+import { IMountain, IOption } from '@/types'
 
 export const OPTIONS: IOption[] = [
   {
@@ -27,5 +27,20 @@ export const OPTIONS: IOption[] = [
     description: 'Lorem ipsum dolor sit amet consectetur.',
     loginDestination: '/vendor/login',
     registerDestination: '/vendor/register'
+  }
+]
+
+export const MOUNTAIN: IMountain[] = [
+  {
+    id: 1,
+    mountainName: 'Gunung Sindoro'
+  },
+  {
+    id: 2,
+    mountainName: 'Gunung Bromo'
+  },
+  {
+    id: 3,
+    mountainName: 'Gunung Arjuna'
   }
 ]
