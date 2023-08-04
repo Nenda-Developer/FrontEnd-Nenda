@@ -124,9 +124,6 @@ const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
     scale: string,
     terms: boolean
   ) => {
-    console.log('tessss', name)
-    console.log('tes', email)
-
     setLoading(true)
     try {
       const response = await fetch(BASEURL + '/auth/register?type=vendor', {

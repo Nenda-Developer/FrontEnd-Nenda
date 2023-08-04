@@ -125,22 +125,20 @@ const VendorRegisterPage: FC = () => {
   }
 
   useEffect(() => {
-    handleVendorRegister(
-      formData.shopOwner,
-      formData.email,
-      formData.password,
-      formData.confirmPassword,
-      formData.NIKOwner,
-      formData.shopName,
-      formData.address,
-      formData.shopScale,
-      termChecked
-    )
+    if (consume) {
+      handleVendorRegister(
+        formData.shopOwner,
+        formData.email,
+        formData.password,
+        formData.confirmPassword,
+        formData.NIKOwner,
+        formData.shopName,
+        formData.address,
+        formData.shopScale,
+        termChecked
+      )
+    }
   }, [consume])
-
-  console.log(termChecked)
-  console.log(typeof formData.shopScale)
-  console.log('consume', consume)
 
   return (
     <div className="w-full h-full">

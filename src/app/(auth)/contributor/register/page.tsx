@@ -117,16 +117,18 @@ const ContributorRegisterPage: FC = () => {
   }
 
   useEffect(() => {
-    handleContributorRegister(
-      formData.username,
-      formData.email,
-      formData.password,
-      formData.confirmPassword,
-      formData.phoneNumber,
-      formData.profession,
-      formData.organization,
-      select
-    )
+    if (consume) {
+      handleContributorRegister(
+        formData.username,
+        formData.email,
+        formData.password,
+        formData.confirmPassword,
+        formData.phoneNumber,
+        formData.profession,
+        formData.organization,
+        select
+      )
+    }
   }, [consume])
 
   return (
