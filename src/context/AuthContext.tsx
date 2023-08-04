@@ -55,9 +55,60 @@ const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const handleContributorRegister = async (
+    name: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    phoneNumber: string,
+    profession: string,
+    community: string,
+    mountExperience: string[]
+  ) => {
+    setLoading(true)
+    try {
+      const response = await fetch(BASEURL + '/auth/register?type=writer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.api+json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          password_confirmation: confirmPassword,
+          no_whatsapp: phoneNumber,
+          occupation: profession,
+          comunity: community,
+          mount_experience: mountExperience
+        })
+      })
+      const responseData = await response.json()
+      console.log('tess', responseData.message)
+      if (response.ok) {
+        toast({
+          variant: 'success',
+          description: responseData.message
+        })
+      } else {
+        toast({
+          description: `${responseData.message} Try again!`,
+          variant: 'failed'
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <AuthOptionContext.Provider value={{ asAuth, handleAsAuth }}>
-      <AuthUserRegisterContext.Provider value={{ loading, handleUserRegister }}>
+      <AuthUserRegisterContext.Provider
+        value={{ loading, handleUserRegister, handleContributorRegister }}
+      >
         {children}
       </AuthUserRegisterContext.Provider>
     </AuthOptionContext.Provider>

@@ -17,7 +17,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { RegisterValidator } from '@/lib/validators/register'
-import { AuthContextType, IFormUserRegister } from '@/types'
+import {
+  AuthContextType,
+  AuthRegisterUserType,
+  IFormUserRegister
+} from '@/types'
 import EyeOff from '@/assets/icons/eye-off.svg'
 import EyeOn from '@/assets/icons/eye-on.svg'
 import { AuthUserRegisterContext } from '@/context/AuthContext'
@@ -28,7 +32,7 @@ const UserRegisterPage: FC = () => {
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   const { handleUserRegister, loading } = useContext(
     AuthUserRegisterContext
-  ) as AuthContextType
+  ) as AuthRegisterUserType
   const form = useForm<z.infer<typeof RegisterValidator>>({
     resolver: zodResolver(RegisterValidator),
     defaultValues: {

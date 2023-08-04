@@ -34,6 +34,16 @@ export type AuthRegisterUserType = {
     email: string,
     password: string
   ) => Promise<void>
+  handleContributorRegister: (
+    name: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    phoneNumber: string,
+    profession: string,
+    community: string,
+    mountExperience: string[]
+  ) => Promise<void>
 }
 
 export interface IMountain {
