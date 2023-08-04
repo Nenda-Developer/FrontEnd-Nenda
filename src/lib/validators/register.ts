@@ -1,20 +1,27 @@
 import { z } from 'zod'
 
-export const RegisterValidator = z.object({
-  username: z.string().min(2, {
-    message: 'Name is required'
-  }),
-  email: z
-    .string()
-    .min(1, 'The email is required.')
-    .email({ message: 'The email is invalid.' }),
-  domisili: z.string().min(2, {
-    message: 'Domisili is required'
-  }),
-  textBox: z.string().min(2, {
-    message: 'TextBox is required'
+export const RegisterValidator = z
+  .object({
+    username: z.string().min(2, {
+      message: 'Name is required'
+    }),
+    email: z
+      .string()
+      .min(1, 'The email is required.')
+      .email({ message: 'The email is invalid.' }),
+    domisili: z.string().min(2, {
+      message: 'Domisili is required'
+    }),
+    textBox: z.string().min(2, {
+      message: 'TextBox is required'
+    }),
+    password: z.string().min(8, 'Password must be 8 characters at minimum'),
+    confirmPassword: z.string()
   })
-})
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Password doesnt match',
+    path: ['confirmPassword']
+  })
 
 export const ContributorRegisterValidator = z.object({
   username: z.string().min(2, {

@@ -1,18 +1,65 @@
-import { AuthContextType } from '@/types'
+import { AuthContextType, AuthRegisterUserType } from '@/types'
 import { ReactNode, createContext, useState } from 'react'
+import { useToast } from '@/components/ui/use-toast'
+import { BASEURL } from '@/constants'
 
 export const AuthOptionContext = createContext<AuthContextType | {}>({})
+export const AuthUserRegisterContext = createContext<
+  AuthRegisterUserType | undefined
+>(undefined)
 
 const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
+  const { toast } = useToast()
   const [asAuth, setAsAuth] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleAsAuth = (as: string) => {
     setAsAuth(as)
   }
 
+  const handleUserRegister = async (
+    name: string,
+    email: string,
+    password: string
+  ) => {
+    setLoading(true)
+    try {
+      const response = await fetch(BASEURL + '/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      })
+      const responseData = await response.json()
+      if (response.ok) {
+        toast({
+          variant: 'success',
+          description: responseData.message
+        })
+      } else {
+        toast({
+          description: `${responseData.message} Try again!`,
+          variant: 'failed'
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <AuthOptionContext.Provider value={{ asAuth, handleAsAuth }}>
-      {children}
+      <AuthUserRegisterContext.Provider value={{ loading, handleUserRegister }}>
+        {children}
+      </AuthUserRegisterContext.Provider>
     </AuthOptionContext.Provider>
   )
 }
