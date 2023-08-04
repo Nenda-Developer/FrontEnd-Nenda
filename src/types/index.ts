@@ -47,6 +47,17 @@ export type AuthRegisterUserType = {
     community: string,
     mountExperience: string[]
   ) => Promise<void>
+  handleVendorRegister: (
+    name: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    identityNumber: string,
+    shopName: string,
+    address: string,
+    scale: string,
+    terms: boolean
+  ) => Promise<void>
 }
 
 export interface IMountain {
