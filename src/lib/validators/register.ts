@@ -62,18 +62,25 @@ export const VendorRegisterValidator = z.object({
   NIKOwner: z.string().regex(/^[0-9]{16}$/, 'NIK is not valid')
 })
 
-export const VendorRegisterStepTwoValidator = z.object({
-  address: z.string().min(2, {
-    message: 'Address is required'
-  }),
-  email: z
-    .string()
-    .min(1, 'The email is required.')
-    .email({ message: 'The email is invalid.' }),
-  phoneNumber: z
-    .string()
-    .regex(/^(\+62|62|0)8[1-9][0-9]{6,9}$/g, 'Phone number is not valid')
-})
+export const VendorRegisterStepTwoValidator = z
+  .object({
+    address: z.string().min(2, {
+      message: 'Address is required'
+    }),
+    email: z
+      .string()
+      .min(1, 'The email is required.')
+      .email({ message: 'The email is invalid.' }),
+    phoneNumber: z
+      .string()
+      .regex(/^(\+62|62|0)8[1-9][0-9]{6,9}$/g, 'Phone number is not valid'),
+    password: z.string().min(8, 'Password must be 8 characters at minimum'),
+    confirmPassword: z.string()
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Password doesnt match',
+    path: ['confirmPassword']
+  })
 
 export const VendorRegisterStepThreeValidator = z.object({
   shopScale: z.enum(['mikro', 'menengah', 'besar'], {

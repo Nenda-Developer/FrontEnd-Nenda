@@ -17,6 +17,7 @@ const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
     setAsAuth(as)
   }
 
+  // this is for handling user register
   const handleUserRegister = async (
     name: string,
     email: string,
@@ -61,6 +62,7 @@ const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  // this is for handling contributor register
   const handleContributorRegister = async (
     name: string,
     email: string,
@@ -110,10 +112,72 @@ const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  // this is for handling vendor register
+  const handleVendorRegister = async (
+    name: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    identityNumber: string,
+    shopeName: string,
+    address: string,
+    scale: string,
+    terms: boolean
+  ) => {
+    console.log('tessss', name)
+    console.log('tes', email)
+
+    setLoading(true)
+    try {
+      const response = await fetch(BASEURL + '/auth/register?type=vendor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          password_confirmation: confirmPassword,
+          nik: identityNumber,
+          vendor: {
+            name: shopeName,
+            address,
+            scale,
+            terms
+          }
+        })
+      })
+      const responseData = await response.json()
+      console.log('tess', responseData.message)
+      if (response.ok) {
+        toast({
+          variant: 'success',
+          description: responseData.message
+        })
+      } else {
+        toast({
+          description: `${responseData.message} Try again!`,
+          variant: 'failed'
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <AuthOptionContext.Provider value={{ asAuth, handleAsAuth }}>
       <AuthUserRegisterContext.Provider
-        value={{ loading, handleUserRegister, handleContributorRegister }}
+        value={{
+          loading,
+          handleUserRegister,
+          handleContributorRegister,
+          handleVendorRegister
+        }}
       >
         {children}
       </AuthUserRegisterContext.Provider>
