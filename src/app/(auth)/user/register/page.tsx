@@ -60,7 +60,14 @@ const UserRegisterPage: FC = () => {
   }
 
   const onSubmit = (data: IFormUserRegister) => {
-    handleUserRegister(data.username, data.email, data.password)
+    handleUserRegister(
+      data.username,
+      data.email,
+      data.password,
+      data.confirmPassword,
+      data.domisili,
+      data.textBox
+    )
   }
 
   return (

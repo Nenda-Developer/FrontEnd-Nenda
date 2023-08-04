@@ -32,7 +32,10 @@ export type AuthRegisterUserType = {
   handleUserRegister: (
     name: string,
     email: string,
-    password: string
+    password: string,
+    confirmPassword: string,
+    domicile: string,
+    reason: string
   ) => Promise<void>
   handleContributorRegister: (
     name: string,

@@ -20,11 +20,14 @@ const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
   const handleUserRegister = async (
     name: string,
     email: string,
-    password: string
+    password: string,
+    confirmPassword: string,
+    domicile: string,
+    reason: string
   ) => {
     setLoading(true)
     try {
-      const response = await fetch(BASEURL + '/auth/register', {
+      const response = await fetch(BASEURL + '/auth/register?type=hiker', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +36,10 @@ const AuthOptionProvider = ({ children }: { children: ReactNode }) => {
         body: JSON.stringify({
           name,
           email,
-          password
+          password,
+          password_confirmation: confirmPassword,
+          domicile,
+          reason_to_join: reason
         })
       })
       const responseData = await response.json()
