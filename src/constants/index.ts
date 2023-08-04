@@ -3,6 +3,8 @@ import ContributorUser from '@/assets/icons/contributor.svg'
 import VendorUser from '@/assets/icons/vendor.svg'
 import { IMountain, IOption } from '@/types'
 
+export const BASEURL = process.env.NEXT_PUBLIC_BASEURL
+
 export const OPTIONS: IOption[] = [
   {
     id: 1,
