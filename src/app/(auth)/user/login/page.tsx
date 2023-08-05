@@ -19,23 +19,49 @@ import { Button } from '@/components/ui/button'
 import EyeOff from '@/assets/icons/eye-off.svg'
 import EyeOn from '@/assets/icons/eye-on.svg'
 import { LoginValidator } from '@/lib/validators/login'
+import { signIn, useSession } from 'next-auth/react'
+import { useToast } from '@/components/ui/use-toast'
+import { useRouter } from 'next/navigation'
 
 const UserLoginPage: FC = () => {
+  const { data: session } = useSession()
+  const { toast } = useToast()
   const [show, setShow] = useState<boolean>(false)
+  const router = useRouter()
   const form = useForm<z.infer<typeof LoginValidator>>({
     resolver: zodResolver(LoginValidator),
     defaultValues: {
-      username: '',
+      email: '',
       password: ''
     }
   })
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors }
   } = useForm()
-  const onSubmit = (data: any) => console.log(data)
+  const onSubmit = async (value: any) => {
+    signIn('credentials', {
+      email: value.email,
+      password: value.password,
+      redirect: false
+    }).then(res => {
+      if (res?.error) {
+        toast({
+          variant: 'failed',
+          description: 'Email Or Password Wrong'
+        })
+      } else {
+        toast({
+          variant: 'success',
+          description: 'Success to login'
+        })
+        router.push('/')
+      }
+    })
+  }
 
   const showHandler = () => {
     setShow(!show)
@@ -53,15 +79,20 @@ const UserLoginPage: FC = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium text-white">
-                      ID Pengguna :
+                    <FormLabel
+                      htmlFor="email"
+                      className="text-base font-medium text-white"
+                    >
+                      Email :
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="cth : Malik Fajar"
+                        id="email"
+                        aria-describedby="email"
+                        placeholder="cth : nama@gmail.com"
                         {...field}
                         className="rounded-[5px] py-6 bg-nenda-dark-blue text-white placeholder:text-[#203D53] focus:outline-nenda-orange"
                       />
@@ -75,20 +106,25 @@ const UserLoginPage: FC = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-base font-medium text-white">
+                    <FormLabel
+                      htmlFor="password"
+                      className="text-base font-medium text-white"
+                    >
                       Password :
                     </FormLabel>
                     <div className="relative">
                       <FormControl>
                         <Input
-                          type={show ? 'password' : 'text'}
+                          id="password"
+                          aria-describedby="password"
+                          type={!show ? 'password' : 'text'}
                           placeholder="_____________"
                           {...field}
                           className="rounded-[5px] py-6 bg-nenda-dark-blue text-white placeholder:text-[#203D53] focus:outline-nenda-orange"
                         />
                       </FormControl>
                       <Image
-                        src={show ? EyeOff : EyeOn}
+                        src={!show ? EyeOff : EyeOn}
                         alt="eyeoff"
                         className="absolute cursor-pointer right-5 top-[30%]"
                         onClick={showHandler}
