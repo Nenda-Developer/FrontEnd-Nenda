@@ -1,10 +1,8 @@
-'use client'
-
-import AuthOptionProvider from '@/context/AuthContext'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import Provider from '@/components/Provider'
+import SessionProviders from '@/components/SessionProvider'
+import Providers from '@/components/Providers'
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -24,11 +22,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Provider>
-        <AuthOptionProvider>
-          <body className={poppins.className}>{children}</body>
-        </AuthOptionProvider>
-      </Provider>
+      <body className={poppins.className}>
+        <SessionProviders>
+          <Providers>{children}</Providers>
+        </SessionProviders>
+      </body>
     </html>
   )
 }
